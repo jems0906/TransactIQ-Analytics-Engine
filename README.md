@@ -78,6 +78,18 @@ docker compose up --build
 - API: http://localhost:5000
 - Dashboard: http://localhost:8501
 
+### Deploying Docker Image To Render
+
+- This project supports Render Docker deploys.
+- The container now binds to `PORT` automatically (`${PORT:-5000}`).
+- Use the repository root `Dockerfile` for the Web Service.
+- Recommended environment variables on Render:
+  - `LOCAL_DB_PATH=/var/data/transactiq.db`
+  - `MODEL_DIR=/var/data/models`
+  - `TRANSACTIQ_API_KEY` and `TRANSACTIQ_ADMIN_API_KEY`
+  - `OPENAI_API_KEY` (optional)
+- Attach a persistent disk at `/var/data` if you want DB/model persistence across deploys.
+
 ## API Endpoints
 
 - GET /health

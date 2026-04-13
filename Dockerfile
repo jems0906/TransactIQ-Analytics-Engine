@@ -37,4 +37,4 @@ ENTRYPOINT ["scripts/entrypoint.sh"]
 
 # Default command runs the production API server.
 # Override via docker compose `command:` to run the Streamlit dashboard.
-CMD ["gunicorn", "--workers", "2", "--timeout", "120", "--bind", "0.0.0.0:5000", "app.api:app"]
+CMD ["sh", "-c", "gunicorn --workers 2 --timeout 120 --bind 0.0.0.0:${PORT:-5000} app.api:app"]
