@@ -84,11 +84,14 @@ docker compose up --build
 - The container now binds to `PORT` automatically (`${PORT:-5000}`).
 - Use the repository root `Dockerfile` for the Web Service.
 - Recommended environment variables on Render:
-  - `LOCAL_DB_PATH=/var/data/transactiq.db`
-  - `MODEL_DIR=/var/data/models`
+  - `LOCAL_DB_PATH=/tmp/transactiq.db` (free tier, ephemeral)
+  - `MODEL_DIR=/tmp/models` (free tier, ephemeral)
   - `TRANSACTIQ_API_KEY` and `TRANSACTIQ_ADMIN_API_KEY`
   - `OPENAI_API_KEY` (optional)
-- Attach a persistent disk at `/var/data` if you want DB/model persistence across deploys.
+- Free tier does not support disks, so DB/models reset on redeploy/restart.
+- On paid plans, attach a persistent disk and set:
+  - `LOCAL_DB_PATH=/var/data/transactiq.db`
+  - `MODEL_DIR=/var/data/models`
 
 ### Deploy To Render With Blueprint
 

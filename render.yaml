@@ -9,9 +9,9 @@ services:
     healthCheckPath: /health
     envVars:
       - key: LOCAL_DB_PATH
-        value: /var/data/transactiq.db
+        value: /tmp/transactiq.db
       - key: MODEL_DIR
-        value: /var/data/models
+        value: /tmp/models
       - key: TRANSACTIQ_API_KEY
         sync: false
       - key: TRANSACTIQ_ADMIN_API_KEY
@@ -20,7 +20,3 @@ services:
         sync: false
       - key: OPENAI_MODEL
         value: gpt-4o-mini
-    disk:
-      name: transactiq-data
-      mountPath: /var/data
-      sizeGB: 1
