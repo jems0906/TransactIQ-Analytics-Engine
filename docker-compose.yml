@@ -1,0 +1,78 @@
+services:
+
+  # ── Analytics API ───────────────────────────────────────────────────────────
+  api:
+    build: .
+    container_name: transactiq-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      LOCAL_DB_PATH: /app/data/transactiq.db
+      MODEL_DIR: /app/data/models
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    restart: unless-stopped
+
+  # ── Streamlit Dashboard ─────────────────────────────────────────────────────
+  dashboard:
+    build: .
+    container_name: transactiq-dashboard
+    command:
+      [
+        "streamlit",
+        "run",
+        "dashboard/streamlit_app.py",
+        "--server.address=0.0.0.0",
+        "--server.port=8501",
+        "--server.headless=true",
+      ]
+    ports:
+      - "8501:8501"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      API_BASE_URL: http://api:5000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── MySQL (optional – enable with: docker compose --profile mysql up) ────────
+  mysql:
+    image: mysql:8.4
+    profiles: ["mysql"]
+    container_name: transactiq-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-transactiq_root}
+      MYSQL_DATABASE: transactiq
+      MYSQL_USER: ${MYSQL_USER:-transactiq}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-transactiq}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

@@ -1,0 +1,23 @@
+# Python runtime
+.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Local secrets – always injected at runtime via env_file
+.env
+
+# Runtime-generated data (persisted via volume mount, not baked into image)
+data/transactiq.db
+data/models/
+
+# Version control
+.git/
+.gitignore
+
+# Editor / OS
+.vscode/
+*.DS_Store
+Thumbs.db
