@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: transactiq-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: LOCAL_DB_PATH
+        value: /var/data/transactiq.db
+      - key: MODEL_DIR
+        value: /var/data/models
+      - key: TRANSACTIQ_API_KEY
+        sync: false
+      - key: TRANSACTIQ_ADMIN_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+    disk:
+      name: transactiq-data
+      mountPath: /var/data
+      sizeGB: 1

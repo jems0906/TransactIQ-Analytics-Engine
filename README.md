@@ -90,6 +90,17 @@ docker compose up --build
   - `OPENAI_API_KEY` (optional)
 - Attach a persistent disk at `/var/data` if you want DB/model persistence across deploys.
 
+### Deploy To Render With Blueprint
+
+1. Open this URL in your browser:
+  - https://render.com/deploy?repo=https://github.com/jems0906/TransactIQ-Analytics-Engine
+2. Render will detect `render.yaml` and preconfigure the `transactiq-api` Docker service.
+3. Set secret environment variables in Render when prompted:
+  - `TRANSACTIQ_API_KEY`
+  - `TRANSACTIQ_ADMIN_API_KEY`
+  - `OPENAI_API_KEY` (optional)
+4. Click deploy.
+
 ## API Endpoints
 
 - GET /health
